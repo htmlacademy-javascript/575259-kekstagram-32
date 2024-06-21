@@ -24,20 +24,8 @@ isPalindrome('Кекс'); // false
 isPalindrome('Лёша на полке клопа нашёл '); // true
 
 const extractDigitsToNumber = (value) => {
-  const normalizeValue = typeof value === 'number' ? String(value) : value;
-
-  const result = normalizeValue
-    .split('')
-    .reduce((acc, char) => {
-      const normalizeChar = parseInt(char, 10);
-      if (!Number.isNaN(normalizeChar)) {
-        return `${acc}${normalizeChar}`;
-      }
-      return acc;
-    }, '');
-
-
-  return result.length > 0 ? Number(result) : NaN;
+  const digits = String(value).match(/\d/g);
+  return digits ? parseInt(digits.join(''), 10) : NaN;
 };
 
 extractDigitsToNumber('2023 год'); // 2023
