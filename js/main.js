@@ -1,4 +1,13 @@
-const PHOTOS_COUNT = 25;
+const PHOTOS = 25;
+const MIN_COMMENT_ID = 1;
+const MIN_AVATAR_ID = 1;
+const MAX_AVATAR_ID = 6;
+const MIN_COMMENTS = 0;
+const MAX_COMMENTS = 30;
+const MIN_LIKES = 15;
+const MAX_LIKES = 200;
+const MIN_MESSAGE_PARAGRAPHS = 1;
+const MAX_MESSAGE_PARAGRAPHS = 2;
 const NAMES = [
   'Александр',
   'Михаил',
@@ -85,6 +94,8 @@ const createRandomIdFromRangeGenerator = (min, max) => {
     let currentValue = getRandomInteger(min, max);
 
     if (previousValues.length >= max - min + 1) {
+      // eslint-disable-next-line no-console
+      console.error(`Перебраны все числа из диапазона от ${min} до ${max}`);
       return null;
     }
 
@@ -101,8 +112,21 @@ const createRandomIdFromRangeGenerator = (min, max) => {
 const getRandomArrayElement = (elements) =>
   elements[getRandomInteger(0, elements.length - 1)];
 
+const generateCommentId = createRandomIdFromRangeGenerator(
+  MIN_COMMENT_ID,
+  PHOTOS * MAX_COMMENTS
+);
+
 const createComment = () => {
-  const messagesCount = getRandomInteger(1, 2);
+  const id = generateCommentId();
+  const avatar = `img/avatar-${getRandomInteger(
+    MIN_AVATAR_ID,
+    MAX_AVATAR_ID
+  )}.svg`;
+  const messagesCount = getRandomInteger(
+    MIN_MESSAGE_PARAGRAPHS,
+    MAX_MESSAGE_PARAGRAPHS
+  );
   const messages = Array.from({ length: messagesCount }, () =>
     getRandomArrayElement(COMMENTS)
   );
@@ -111,31 +135,31 @@ const createComment = () => {
   const name = getRandomArrayElement(NAMES);
 
   return {
-    id: getRandomInteger(1, 1000),
-    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+    id,
+    avatar,
     message,
     name,
   };
 };
 
-const generatePhotoId = createRandomIdFromRangeGenerator(1, PHOTOS_COUNT);
-
-const createPhoto = () => {
-  const photoId = generatePhotoId();
-  const commentsCount = getRandomInteger(0, 30);
+const createPhoto = (_element, index) => {
+  const id = index + 1;
+  const commentsCount = getRandomInteger(MIN_COMMENTS, MAX_COMMENTS);
   const comments = Array.from({ length: commentsCount }, createComment);
-  const likes = getRandomInteger(15, 200);
+  const likes = getRandomInteger(MIN_LIKES, MAX_LIKES);
+  const description = 'Описание фотографии';
+  const url = `photos/${id}.jpg`;
 
   return {
-    id: photoId,
-    url: `photos/${photoId}.jpg`,
-    description: 'Описание фотографии',
+    id,
+    url,
+    description,
     likes,
     comments,
   };
 };
 
-const photos = Array.from({ length: PHOTOS_COUNT }, createPhoto);
+const photos = Array.from({ length: PHOTOS }, createPhoto);
 
 // eslint-disable-next-line no-console
 console.log(photos);
