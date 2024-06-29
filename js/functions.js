@@ -1,3 +1,5 @@
+const MINUTES_IN_HOUR = 60;
+
 const isValidStringLength = (str, maxLength) => str.length <= maxLength;
 
 // Строка короче 20 символов
@@ -36,3 +38,32 @@ extractDigitsToNumber('а я томат'); // NaN
 extractDigitsToNumber(2023); // 2023
 extractDigitsToNumber(-1); // 1
 extractDigitsToNumber(1.5); // 15
+
+const convertTimeToMinutes = (time) => {
+  const [hours, minutes] = time.split(':').map(Number);
+
+  return hours * MINUTES_IN_HOUR + minutes;
+};
+
+const isMeetingDuringWorkHours = (
+  startWorkDay,
+  endWorkDay,
+  startTime,
+  meetDuration
+) => {
+  const startWorkMinutes = convertTimeToMinutes(startWorkDay);
+  const endWorkMinutes = convertTimeToMinutes(endWorkDay);
+  const startMeetingMinutes = convertTimeToMinutes(startTime);
+  const endMeetingMinutes = startMeetingMinutes + meetDuration;
+
+  return (
+    startMeetingMinutes >= startWorkMinutes &&
+    endMeetingMinutes <= endWorkMinutes
+  );
+};
+
+isMeetingDuringWorkHours('08:00', '17:30', '14:00', 90); // true
+isMeetingDuringWorkHours('8:0', '10:0', '8:0', 120); // true
+isMeetingDuringWorkHours('08:00', '14:30', '14:00', 90); // false
+isMeetingDuringWorkHours('14:00', '17:30', '08:0', 90); // false
+isMeetingDuringWorkHours('8:00', '17:30', '08:00', 900); // false
