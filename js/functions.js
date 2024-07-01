@@ -22,7 +22,7 @@ isPalindrome('топот'); // true
 isPalindrome('ДовОд'); // true
 // Это не палиндром
 isPalindrome('Кекс'); // false
-// Это палиндром
+// Это точно палиндром
 isPalindrome('Лёша на полке клопа нашёл '); // true
 
 const extractDigitsToNumber = (value) => {
