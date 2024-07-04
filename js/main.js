@@ -1,4 +1,3 @@
-import { createPhotos } from './data.js';
+import { renderPhotos } from './render-photos.js';
 
-// eslint-disable-next-line no-console
-console.log(createPhotos());
+renderPhotos();
