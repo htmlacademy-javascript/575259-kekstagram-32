@@ -15,7 +15,7 @@ const renderPhotos = () => {
     const likes = newTemplatePicture.querySelector('.picture__likes');
     const comments = newTemplatePicture.querySelector('.picture__comments');
 
-    img.id = photo.id;
+    img.dataset.photoId = photo.id;
     img.src = photo.url;
     img.alt = photo.description;
     likes.textContent = photo.likes;

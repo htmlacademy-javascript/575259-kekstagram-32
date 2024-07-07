@@ -38,7 +38,7 @@ function bigPhotoClose() {
   bigPhoto.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', handleBigPhotoCloseByEsc);
-  bigPhotoCloseButton.addEventListener('click', handleBigPhotoClose);
+  bigPhotoCloseButton.removeEventListener('click', handleBigPhotoClose);
 }
 
 const generateCommentsBlock = (comments) => {
