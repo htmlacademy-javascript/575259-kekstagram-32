@@ -1,7 +1,8 @@
 import { createPhotos } from './data.js';
 
+const photos = createPhotos();
+
 const renderPhotos = () => {
-  const photos = createPhotos();
   const template = document.querySelector('#picture').content;
   const templatePicture = template.querySelector('.picture');
   const photosContainer = document.querySelector('.pictures');
@@ -14,6 +15,7 @@ const renderPhotos = () => {
     const likes = newTemplatePicture.querySelector('.picture__likes');
     const comments = newTemplatePicture.querySelector('.picture__comments');
 
+    img.dataset.photoId = photo.id;
     img.src = photo.url;
     img.alt = photo.description;
     likes.textContent = photo.likes;
@@ -25,4 +27,4 @@ const renderPhotos = () => {
   photosContainer.append(photosFragment);
 };
 
-export { renderPhotos };
+export { renderPhotos, photos };
