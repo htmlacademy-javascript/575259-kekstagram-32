@@ -1,5 +1,8 @@
 import { isEscapeKey } from './utils';
 
+const COMMENT_IMAGE_WIDTH = 35;
+const COMMENT_IMAGE_HEIGHT = 35;
+
 const bigPhoto = document.querySelector('.big-picture');
 const bigPhotoCloseButton = bigPhoto.querySelector('.big-picture__cancel');
 const bigPhotoImg = bigPhoto.querySelector('.big-picture__img img');
@@ -47,11 +50,8 @@ const generateCommentsBlock = (comments) => {
   comments.forEach((comment) => {
     const { avatar, name, message } = comment;
 
-    const COMMENT_IMAGE_WIDTH = 35;
-    const COMMENT_IMAGE_HEIGHT = 35;
-
-    const li = document.createElement('li');
-    li.classList.add('social__comment');
+    const listItemElement = document.createElement('li');
+    listItemElement.classList.add('social__comment');
 
     const commentImg = document.createElement('img');
     commentImg.classList.add('social__picture');
@@ -63,9 +63,9 @@ const generateCommentsBlock = (comments) => {
     const commentText = document.createElement('p');
     commentText.classList.add('social__text');
     commentText.textContent = message;
-    li.append(commentImg, commentText);
+    listItemElement.append(commentImg, commentText);
 
-    commentsFragment.append(li);
+    commentsFragment.append(listItemElement);
   });
 
   return commentsFragment;
