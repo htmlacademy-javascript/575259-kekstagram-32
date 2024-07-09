@@ -6,25 +6,25 @@ renderPhotos();
 
 const photosContainer = document.querySelector('.pictures');
 
-const bigPhotoOpen = (event, element) => {
+const openPhotoPreview = (event, element) => {
   event.preventDefault();
 
   const currentPhoto = photos.find((photo) => photo.id === Number(element.dataset.photoId));
   renderBigPhoto(currentPhoto);
 };
 
-const handleBigPhotoOpenKeyDown = (event) => {
+const photoPreviewKeyDownHandler = (event) => {
   if (event.target.closest('.picture') && isEnterKey(event)) {
-    bigPhotoOpen(event, event.target.children[0]);
+    openPhotoPreview(event, event.target.children[0]);
   }
 };
 
-const handleBigPhotoOpenClick = (event) => {
+const photoPreviewClickHandler = (event) => {
   if (event.target.matches('.picture img')) {
-    bigPhotoOpen(event, event.target);
+    openPhotoPreview(event, event.target);
   }
 };
 
-photosContainer.addEventListener('keydown', handleBigPhotoOpenKeyDown);
+photosContainer.addEventListener('keydown', photoPreviewKeyDownHandler);
 
-photosContainer.addEventListener('click', handleBigPhotoOpenClick);
+photosContainer.addEventListener('click', photoPreviewClickHandler);
