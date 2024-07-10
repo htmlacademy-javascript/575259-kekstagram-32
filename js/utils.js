@@ -1,3 +1,8 @@
+const KEY_CODE = {
+  ESCAPE: 'Escape',
+  ENTER: 'Enter',
+};
+
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -28,11 +33,9 @@ const createRandomIdFromRangeGenerator = (min, max) => {
   };
 };
 
-const getRandomArrayElement = (elements) =>
-  elements[getRandomInteger(0, elements.length - 1)];
+const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-export {
-  createRandomIdFromRangeGenerator,
-  getRandomArrayElement,
-  getRandomInteger,
-};
+const isEscapeKey = (evt) => evt.key === KEY_CODE.ESCAPE;
+const isEnterKey = (evt) => evt.key === KEY_CODE.ENTER;
+
+export { createRandomIdFromRangeGenerator, getRandomArrayElement, getRandomInteger, isEscapeKey, isEnterKey };
