@@ -17,20 +17,18 @@ const commentsLoadMore = bigPhoto.querySelector('.comments-loader');
 let currentComments = [];
 let currentCommentsCount = COMMENTS_COUNT_STEP;
 
-const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
 
-    bigPhotoClose();
-  }
-};
-
-const handleBigPhotoClose = () => {
+const bigPhotoCloseHandler = () => {
   bigPhotoClose();
 };
 
-const handleBigPhotoCloseByEsc = (event) => {
-  onDocumentKeydown(event);
+const bigPhotoKeydownHandler = (event) => {
+  if (isEscapeKey(event)) {
+    event.preventDefault();
+
+    bigPhotoClose();
+  }
+
 };
 
 const bigPhotoOpen = () => {
@@ -41,8 +39,8 @@ const bigPhotoOpen = () => {
     commentsLoadMore.classList.remove('hidden');
   }
 
-  document.addEventListener('keydown', handleBigPhotoCloseByEsc);
-  bigPhotoCloseButton.addEventListener('click', handleBigPhotoClose);
+  document.addEventListener('keydown', bigPhotoKeydownHandler);
+  bigPhotoCloseButton.addEventListener('click', bigPhotoCloseHandler);
 };
 
 function bigPhotoClose() {
@@ -51,9 +49,9 @@ function bigPhotoClose() {
 
   bigPhoto.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', handleBigPhotoCloseByEsc);
-  bigPhotoCloseButton.removeEventListener('click', handleBigPhotoClose);
-  commentsLoadMore.removeEventListener('click', handleCommentsLoadMore);
+  document.removeEventListener('keydown', bigPhotoKeydownHandler);
+  bigPhotoCloseButton.removeEventListener('click', bigPhotoCloseHandler);
+  commentsLoadMore.removeEventListener('click', commentsLoadMoreHandler);
 }
 
 const renderCommentsBlock = (comments) => {
@@ -83,7 +81,7 @@ const renderCommentsBlock = (comments) => {
   commentsContainer.append(commentsFragment);
 };
 
-function handleCommentsLoadMore() {
+function commentsLoadMoreHandler() {
   currentCommentsCount += COMMENTS_COUNT_STEP;
   showedComments.textContent = currentCommentsCount;
   renderCommentsBlock(currentComments.slice(0, currentCommentsCount));
@@ -112,7 +110,7 @@ const renderBigPhoto = (photo) => {
     commentsLoadMore.classList.add('hidden');
   }
 
-  commentsLoadMore.addEventListener('click', handleCommentsLoadMore);
+  commentsLoadMore.addEventListener('click', commentsLoadMoreHandler);
 };
 
 export { renderBigPhoto };
