@@ -28,7 +28,6 @@ const bigPhotoKeydownHandler = (event) => {
 
     bigPhotoClose();
   }
-
 };
 
 const bigPhotoOpen = () => {
