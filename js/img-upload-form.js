@@ -1,8 +1,15 @@
 import { isEscapeKey } from './utils.js';
-
-const HASH_TAG_REG_EXP = /^#[a-zа-яё0-9]{1,19}$/i;
-const MAX_HASH_TAG_COUNT = 5;
-const MAX_COMMENT_LENGTH = 140;
+import {
+  isHashtagsSpaced,
+  isHastagLengthCorrect,
+  isHashtagsStartsWithHash,
+  isHashtagsLengthCorrect,
+  isHashtagsUnique,
+  isHashtagsCorrect,
+  isCommentLengthCorrect,
+  getValidationHashtagsErrorMessage,
+  getValidationCommentErrorMessage,
+} from './validation-utils.js';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 
@@ -12,8 +19,14 @@ const pristine = new Pristine(imgUploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-imgUploadForm.addEventListener('submit', () => {
-  pristine.validate();
+imgUploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  const isValid = pristine.validate();
+
+  if (isValid) {
+    imgUploadForm.submit();
+  }
 });
 
 const hashTagInput = imgUploadForm.querySelector('.text__hashtags');
@@ -21,32 +34,17 @@ const hashTagInput = imgUploadForm.querySelector('.text__hashtags');
 const validateHashtag = (value) => {
   const hastags = value.split(' ').map((hastag) => hastag.toLowerCase());
 
-  const isEveryHashTagStartsWithHash = hastags.every((hastag) => hastag.startsWith('#'));
-
-  if (!isEveryHashTagStartsWithHash) {
-    return false;
-  }
-
-  if (hastags.length > MAX_HASH_TAG_COUNT) {
-    return false;
-  }
-
-  const uniqueHashtagsLength = new Set(hastags).size;
-
-  if (hastags.length !== uniqueHashtagsLength) {
-    return false;
-  }
-
-  const isEveryHashTagCorrect = hastags.every((hastag) => HASH_TAG_REG_EXP.test(hastag));
-
-  if (!isEveryHashTagCorrect) {
-    return false;
-  }
-
-  return true;
+  return (
+    isHashtagsSpaced(hastags) &&
+    isHashtagsStartsWithHash(hastags) &&
+    isHastagLengthCorrect(hastags) &&
+    isHashtagsLengthCorrect(hastags) &&
+    isHashtagsUnique(hastags) &&
+    isHashtagsCorrect(hastags)
+  );
 };
 
-pristine.addValidator(hashTagInput, validateHashtag, 'Хэштег некорректный');
+pristine.addValidator(hashTagInput, validateHashtag, getValidationHashtagsErrorMessage);
 
 hashTagInput.addEventListener('keydown', (event) => {
   if (event.target.focus) {
@@ -56,9 +54,9 @@ hashTagInput.addEventListener('keydown', (event) => {
 
 const commentInput = imgUploadForm.querySelector('.text__description');
 
-const validateComment = (value) => value.length <= MAX_COMMENT_LENGTH;
+const validateComment = (value) => isCommentLengthCorrect(value);
 
-pristine.addValidator(commentInput, validateComment, 'Длина комментария не должна превышать 140 символов');
+pristine.addValidator(commentInput, validateComment, getValidationCommentErrorMessage);
 
 commentInput.addEventListener('keydown', (event) => {
   if (event.target.focus) {
