@@ -35,7 +35,7 @@ const createRandomIdFromRangeGenerator = (min, max) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-const isEscapeKey = (evt) => evt.key === KEY_CODE.ESCAPE;
-const isEnterKey = (evt) => evt.key === KEY_CODE.ENTER;
+const isEscapeKey = (event) => event.key === KEY_CODE.ESCAPE;
+const isEnterKey = (event) => event.key === KEY_CODE.ENTER;
 
 export { createRandomIdFromRangeGenerator, getRandomArrayElement, getRandomInteger, isEscapeKey, isEnterKey };

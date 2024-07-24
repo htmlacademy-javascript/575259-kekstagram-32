@@ -9,6 +9,7 @@ import {
   isCommentLengthCorrect,
   getValidationHashtagsErrorMessage,
   getValidationCommentErrorMessage,
+  validateByRules,
 } from './validation-utils.js';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
@@ -19,8 +20,8 @@ const pristine = new Pristine(imgUploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-imgUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+imgUploadForm.addEventListener('submit', (event) => {
+  event.preventDefault();
 
   const isValid = pristine.validate();
 
@@ -32,15 +33,20 @@ imgUploadForm.addEventListener('submit', (evt) => {
 const hashTagInput = imgUploadForm.querySelector('.text__hashtags');
 
 const validateHashtag = (value) => {
-  const hastags = value.split(' ').map((hastag) => hastag.toLowerCase());
+  const hashtags = value.split(' ').map((hastag) => hastag.toLowerCase());
 
-  return (
-    isHashtagsSpaced(hastags) &&
-    isHashtagsStartsWithHash(hastags) &&
-    isHastagLengthCorrect(hastags) &&
-    isHashtagsLengthCorrect(hastags) &&
-    isHashtagsUnique(hastags) &&
-    isHashtagsCorrect(hastags)
+  const validationRules = [
+    isHashtagsSpaced,
+    isHashtagsStartsWithHash,
+    isHastagLengthCorrect,
+    isHashtagsLengthCorrect,
+    isHashtagsUnique,
+    isHashtagsCorrect,
+  ];
+
+  return validateByRules(
+    validationRules,
+    hashtags
   );
 };
 

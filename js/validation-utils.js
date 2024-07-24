@@ -87,6 +87,8 @@ const isCommentLengthCorrect = (value) => {
 const getValidationHashtagsErrorMessage = () => validationHashtagsErrorMessage;
 const getValidationCommentErrorMessage = () => validationCommentErrorMessage;
 
+const validateByRules = (rules, value) => rules.every((rule) => rule(value));
+
 export {
   isHashtagsSpaced,
   isHashtagsStartsWithHash,
@@ -97,4 +99,5 @@ export {
   isCommentLengthCorrect,
   getValidationHashtagsErrorMessage,
   getValidationCommentErrorMessage,
+  validateByRules,
 };
