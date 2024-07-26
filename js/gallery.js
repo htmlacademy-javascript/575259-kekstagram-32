@@ -1,8 +1,16 @@
 import { renderBigPhoto } from './render-big-photo.js';
-import { renderPhotos, photos } from './render-photos.js';
-import { isEnterKey } from './utils.js';
+import { isEnterKey, showAlert } from './utils.js';
+import { getPhotos } from './api.js';
+import { renderPhotos } from './render-photos.js';
 
-renderPhotos();
+let photos = [];
+
+try {
+  photos = await getPhotos();
+  renderPhotos(photos);
+} catch (_error) {
+  showAlert();
+}
 
 const photosContainer = document.querySelector('.pictures');
 

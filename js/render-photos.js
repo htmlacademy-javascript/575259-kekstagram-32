@@ -1,8 +1,4 @@
-import { createPhotos } from './data.js';
-
-const photos = createPhotos();
-
-const renderPhotos = () => {
+const renderPhotos = (photos) => {
   const template = document.querySelector('#picture').content;
   const templatePicture = template.querySelector('.picture');
   const photosContainer = document.querySelector('.pictures');
@@ -27,4 +23,4 @@ const renderPhotos = () => {
   photosContainer.append(photosFragment);
 };
 
-export { renderPhotos, photos };
+export { renderPhotos };

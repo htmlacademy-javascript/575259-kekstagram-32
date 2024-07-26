@@ -1,41 +1,26 @@
+const ALERT_SHOW_TIME = 5000;
+
 const KEY_CODE = {
   ESCAPE: 'Escape',
   ENTER: 'Enter',
 };
 
-const getRandomInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-
-  return Math.floor(result);
-};
-
-const createRandomIdFromRangeGenerator = (min, max) => {
-  const previousValues = [];
-
-  return function () {
-    let currentValue = getRandomInteger(min, max);
-
-    if (previousValues.length >= max - min + 1) {
-      // eslint-disable-next-line no-console
-      console.error(`Перебраны все числа из диапазона от ${min} до ${max}`);
-      return null;
-    }
-
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-
-    previousValues.push(currentValue);
-
-    return currentValue;
-  };
-};
-
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-
 const isEscapeKey = (event) => event.key === KEY_CODE.ESCAPE;
 const isEnterKey = (event) => event.key === KEY_CODE.ENTER;
 
-export { createRandomIdFromRangeGenerator, getRandomArrayElement, getRandomInteger, isEscapeKey, isEnterKey };
+const showAlert = () => {
+  const templateErrorContent = document.querySelector('#data-error').content;
+  const errorElement = templateErrorContent.querySelector('.data-error');
+  const newErrorElement = errorElement.cloneNode(true);
+
+  const errorContainer = document.createDocumentFragment();
+
+  errorContainer.append(newErrorElement);
+  document.body.append(errorContainer);
+
+  setTimeout(() => {
+    newErrorElement.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+export { isEscapeKey, isEnterKey, showAlert };
