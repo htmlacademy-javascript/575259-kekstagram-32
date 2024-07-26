@@ -51,6 +51,7 @@ const FILTER_SLIDER_OPTIONS_MAPPING = {
   [EFFECTS.marvin]: MARVIN_FILTER_SLIDER_OPTIONS,
   [EFFECTS.phobos]: PHOBOS_FILTER_SLIDER_OPTIONS,
   [EFFECTS.heat]: HEAT_FILTER_SLIDER_OPTIONS,
+  [EFFECTS.none]: DEFAULT_SLIDER_OPTIONS,
 };
 
 const FILTER_MAPPING = {
@@ -101,13 +102,15 @@ const showSlider = () => {
 };
 
 const resetFilters = () => {
+  const defaultEffect = document.querySelector('.effects__radio#effect-none');
+  defaultEffect.checked = true;
+
   sliderContainer.classList.add('hidden');
   effectLevelSlider.classList.add('hidden');
   imgPreview.style.filter = 'none';
+  effectLevelSlider.noUiSlider.updateOptions(FILTER_SLIDER_OPTIONS_MAPPING[EFFECTS.none]);
 };
 
-const defaultEffect = document.querySelector('.effects__radio#effect-none');
-defaultEffect.checked = true;
 resetFilters();
 
 effectsList.addEventListener('change', (event) => {
@@ -126,3 +129,5 @@ effectsList.addEventListener('change', (event) => {
     effectLevelSlider.noUiSlider.updateOptions(FILTER_SLIDER_OPTIONS_MAPPING[effectId]);
   }
 });
+
+export { resetFilters };

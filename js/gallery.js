@@ -1,7 +1,7 @@
-import { renderBigPhoto } from './render-big-photo.js';
-import { isEnterKey, showAlert } from './utils.js';
 import { getPhotos } from './api.js';
 import { renderPhotos } from './render-photos.js';
+import { renderBigPhoto } from './render-big-photo.js';
+import { isEnterKey, showFetchPhotosErrorAlert } from './utils.js';
 
 let photos = [];
 
@@ -9,7 +9,7 @@ try {
   photos = await getPhotos();
   renderPhotos(photos);
 } catch (_error) {
-  showAlert();
+  showFetchPhotosErrorAlert();
 }
 
 const photosContainer = document.querySelector('.pictures');
