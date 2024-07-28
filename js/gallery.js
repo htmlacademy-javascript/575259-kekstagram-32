@@ -1,13 +1,25 @@
 import { getPhotos } from './api.js';
 import { renderPhotos } from './render-photos.js';
 import { renderBigPhoto } from './render-big-photo.js';
-import { isEnterKey, showFetchPhotosErrorAlert } from './utils.js';
+import { isEnterKey, showFetchPhotosErrorAlert, debounce } from './utils.js';
+import { setDefaultFilter, setDiscussedFilter, setRandomFilter } from './filters.js';
+
+const RERENDER_DELAY = 500;
 
 let photos = [];
 
 try {
   photos = await getPhotos();
   renderPhotos(photos);
+  setDefaultFilter(debounce(() => renderPhotos(photos), RERENDER_DELAY));
+  setRandomFilter(
+    photos,
+    debounce((filteredPhotos) => renderPhotos(filteredPhotos), RERENDER_DELAY)
+  );
+  setDiscussedFilter(
+    photos,
+    debounce((filteredPhotos) => renderPhotos(filteredPhotos), RERENDER_DELAY)
+  );
 } catch (_error) {
   showFetchPhotosErrorAlert();
 }
