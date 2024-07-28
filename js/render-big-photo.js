@@ -1,4 +1,4 @@
-import { isEscapeKey } from './utils';
+import { isEscapeKey } from './utils.js';
 
 const COMMENT_IMAGE_WIDTH = 35;
 const COMMENT_IMAGE_HEIGHT = 35;

@@ -14,6 +14,8 @@ import {
 import { createPhoto } from './api.js';
 import { resetFilters } from './big-photo-effects.js';
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const imgUploadInput = document.querySelector('.img-upload__input');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadCancelButton = document.querySelector('.img-upload__cancel');
@@ -21,6 +23,7 @@ const imgUploadForm = document.querySelector('.img-upload__form');
 const submitButton = document.querySelector('.img-upload__submit');
 const hashTagInput = imgUploadForm.querySelector('.text__hashtags');
 const commentInput = imgUploadForm.querySelector('.text__description');
+const imgPreview = document.querySelector('.img-upload__preview img');
 
 const imgUploadOverlayClose = () => {
   imgUploadOverlay.classList.add('hidden');
@@ -45,8 +48,20 @@ const imgUploadOverlayOpen = () => {
   document.addEventListener('keydown', imageUploadOverlayKeydownHandler);
 };
 
+const setImgPreview = () => {
+  const file = imgUploadInput.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    imgPreview.src = URL.createObjectURL(file);
+  }
+};
+
 const imgUploadOverlayOpenHandler = () => {
   imgUploadOverlayOpen();
+  setImgPreview();
 };
 
 imgUploadInput.addEventListener('change', imgUploadOverlayOpenHandler);
