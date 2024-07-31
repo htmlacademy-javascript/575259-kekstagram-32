@@ -57,4 +57,9 @@ const setDiscussedFilter = (photos, callback) => {
 
 const hideFilters = () => filters.classList.add('img-filters--inactive');
 
-export { setDiscussedFilter, setDefaultFilter, setRandomFilter, hideFilters };
+export {
+  setDiscussedFilter,
+  setDefaultFilter,
+  setRandomFilter,
+  hideFilters,
+};
