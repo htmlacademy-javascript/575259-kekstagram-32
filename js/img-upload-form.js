@@ -13,6 +13,7 @@ import {
 } from './validation-utils.js';
 import { createPhoto } from './api.js';
 import { resetFilters } from './big-photo-effects.js';
+import { resetScale } from './big-photo-scale.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
@@ -24,6 +25,21 @@ const submitButton = document.querySelector('.img-upload__submit');
 const hashTagInput = imgUploadForm.querySelector('.text__hashtags');
 const commentInput = imgUploadForm.querySelector('.text__description');
 const imgPreview = document.querySelector('.img-upload__preview img');
+const effectsPreview = document.querySelectorAll('.effects__preview');
+
+const pristine = new Pristine(imgUploadForm, {
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextClass: 'img-upload__field-wrapper--error',
+});
+
+const addKeyDownUploadOverlayEvent = () => {
+  document.addEventListener('keydown', imageUploadOverlayKeydownHandler);
+};
+
+const removeKeyDownUploadOverlayEvent = () => {
+  document.removeEventListener('keydown', imageUploadOverlayKeydownHandler);
+};
 
 const imgUploadOverlayClose = () => {
   imgUploadOverlay.classList.add('hidden');
@@ -32,9 +48,11 @@ const imgUploadOverlayClose = () => {
   hashTagInput.value = '';
   commentInput.value = '';
   resetFilters();
+  resetScale();
+  pristine.reset();
 
   imgUploadCancelButton.removeEventListener('click', imgUploadOverlayCloseHandler);
-  document.removeEventListener('keydown', imageUploadOverlayKeydownHandler);
+  removeKeyDownUploadOverlayEvent();
   hashTagInput.removeEventListener('keydown', inputKeydownHandler);
   commentInput.removeEventListener('keydown', inputKeydownHandler);
   imgUploadForm.removeEventListener('submit', imgUploadFormSubmitHandler);
@@ -44,8 +62,10 @@ const imgUploadOverlayOpen = () => {
   imgUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
+  imgUploadForm.addEventListener('submit', imgUploadFormSubmitHandler);
+
   imgUploadCancelButton.addEventListener('click', imgUploadOverlayCloseHandler);
-  document.addEventListener('keydown', imageUploadOverlayKeydownHandler);
+  addKeyDownUploadOverlayEvent();
 };
 
 const setImgPreview = () => {
@@ -54,8 +74,14 @@ const setImgPreview = () => {
 
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
+  const previewUrl = URL.createObjectURL(file);
+
+  effectsPreview.forEach((effect) => {
+    effect.style.backgroundImage = `url(${previewUrl})`;
+  });
+
   if (matches) {
-    imgPreview.src = URL.createObjectURL(file);
+    imgPreview.src = previewUrl;
   }
 };
 
@@ -78,12 +104,6 @@ function imageUploadOverlayKeydownHandler(event) {
   }
 }
 
-const pristine = new Pristine(imgUploadForm, {
-  classTo: 'img-upload__field-wrapper',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'img-upload__field-wrapper--error',
-});
-
 async function imgUploadFormSubmitHandler(event) {
   event.preventDefault();
 
@@ -98,14 +118,12 @@ async function imgUploadFormSubmitHandler(event) {
       imgUploadOverlayClose();
       showCreatePhotoSuccessAlert();
     } catch (_error) {
-      showCreatePhotoErrorAlert();
+      showCreatePhotoErrorAlert(addKeyDownUploadOverlayEvent, removeKeyDownUploadOverlayEvent);
     } finally {
       submitButton.disabled = false;
     }
   }
 }
-
-imgUploadForm.addEventListener('submit', imgUploadFormSubmitHandler);
 
 const validateHashtag = (value) => {
   const hashtags = value
