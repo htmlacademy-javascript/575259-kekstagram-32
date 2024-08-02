@@ -7,6 +7,11 @@ const scaleBiggerButton = document.querySelector('.scale__control--bigger');
 const scaleInput = document.querySelector('.scale__control--value');
 const imgPreview = document.querySelector('.img-upload__preview img');
 
+const resetScale = () => {
+  imgPreview.style.transform = 'scale(100%)';
+  scaleInput.value = '100%';
+};
+
 const imgPreviewScaleDownHandler = () => {
   const currentScale = parseInt(scaleInput.value, 10);
   const newScale = currentScale - SCALE_STEP;
@@ -32,3 +37,5 @@ const imgPreviewScaleUpHandler = () => {
 
 scaleSmallerButton.addEventListener('click', imgPreviewScaleDownHandler);
 scaleBiggerButton.addEventListener('click', imgPreviewScaleUpHandler);
+
+export { resetScale };

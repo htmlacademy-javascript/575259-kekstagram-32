@@ -27,20 +27,23 @@ const showFetchPhotosErrorAlert = () => {
   }, ALERT_SHOW_TIME);
 };
 
-const showCreatePhotoErrorAlert = () => {
+const showCreatePhotoErrorAlert = (addKeyDownUploadOverlayEvent, removeKeyDownUploadOverlayEvent) => {
   const errorElement = createTemplateElementByID('error');
   const errorContainer = document.createDocumentFragment();
   const errorButton = errorElement.querySelector('.error__button');
   const errorInnerElement = errorElement.querySelector('.error__inner');
+
+  removeKeyDownUploadOverlayEvent();
 
   errorContainer.append(errorElement);
   document.body.append(errorContainer);
 
   const closeSuccessAlert = () => {
     errorElement.remove();
-    errorElement.removeEventListener('keydown', escapeKeyHandler);
+    document.removeEventListener('keydown', escapeKeyHandler);
     errorElement.removeEventListener('click', outsideClickHandler);
     errorButton.removeEventListener('click', errorButtonClickHandler);
+    addKeyDownUploadOverlayEvent();
   };
 
   function outsideClickHandler(event) {
@@ -61,7 +64,7 @@ const showCreatePhotoErrorAlert = () => {
   }
 
   errorElement.addEventListener('click', outsideClickHandler);
-  errorElement.addEventListener('keydown', escapeKeyHandler);
+  document.addEventListener('keydown', escapeKeyHandler);
   errorButton.addEventListener('click', errorButtonClickHandler);
 };
 
@@ -76,7 +79,7 @@ const showCreatePhotoSuccessAlert = () => {
 
   const closeSuccessAlert = () => {
     successElement.remove();
-    successElement.removeEventListener('keydown', escapeKeyHandler);
+    document.removeEventListener('keydown', escapeKeyHandler);
     successElement.removeEventListener('click', outsideClickHandler);
   };
 
@@ -97,7 +100,7 @@ const showCreatePhotoSuccessAlert = () => {
     closeSuccessAlert();
   };
 
-  successElement.addEventListener('keydown', escapeKeyHandler);
+  document.addEventListener('keydown', escapeKeyHandler);
   successElement.addEventListener('click', outsideClickHandler);
 
   const successButton = successElement.querySelector('.success__button');

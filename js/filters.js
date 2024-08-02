@@ -3,7 +3,14 @@ import { createRandomIndexFromRangeGenerator } from './utils.js';
 const MAX_RANDOM_PHOTOS = 10;
 
 const filters = document.querySelector('.img-filters');
-filters.classList.remove('img-filters--inactive');
+
+const showFilters = () => {
+  filters.classList.remove('img-filters--inactive');
+};
+
+const hideFilters = () => {
+  filters.classList.add('img-filters--inactive');
+};
 
 const filterDefault = document.querySelector('#filter-default');
 const filterRandom = document.querySelector('#filter-random');
@@ -55,11 +62,4 @@ const setDiscussedFilter = (photos, callback) => {
   filterDiscussed.addEventListener('click', clickFilterHandler);
 };
 
-const hideFilters = () => filters.classList.add('img-filters--inactive');
-
-export {
-  setDiscussedFilter,
-  setDefaultFilter,
-  setRandomFilter,
-  hideFilters,
-};
+export { setDiscussedFilter, setDefaultFilter, setRandomFilter, showFilters,hideFilters };
