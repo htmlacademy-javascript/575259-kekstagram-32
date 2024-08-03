@@ -6,47 +6,52 @@ import { hideFilters, setDefaultFilter, setDiscussedFilter, setRandomFilter, sho
 
 const RERENDER_DELAY = 500;
 
-let photos = [];
+const renderGallery = async () => {
+  const photosContainer = document.querySelector('.pictures');
 
-try {
-  photos = await getPhotos();
-  showFilters();
-  renderPhotos(photos);
-  setDefaultFilter(debounce(() => renderPhotos(photos), RERENDER_DELAY));
-  setRandomFilter(
-    photos,
-    debounce((filteredPhotos) => renderPhotos(filteredPhotos), RERENDER_DELAY)
-  );
-  setDiscussedFilter(
-    photos,
-    debounce((filteredPhotos) => renderPhotos(filteredPhotos), RERENDER_DELAY)
-  );
-} catch (_error) {
-  hideFilters();
-  showFetchPhotosErrorAlert();
-}
+  let photos = [];
 
-const photosContainer = document.querySelector('.pictures');
-
-const openPhotoPreview = (event, element) => {
-  event.preventDefault();
-
-  const currentPhoto = photos.find((photo) => photo.id === Number(element.dataset.photoId));
-  renderBigPhoto(currentPhoto);
-};
-
-const photoPreviewKeyDownHandler = (event) => {
-  if (event.target.closest('.picture') && isEnterKey(event)) {
-    openPhotoPreview(event, event.target.children[0]);
+  try {
+    photos = await getPhotos();
+    showFilters();
+    renderPhotos(photos);
+    setDefaultFilter(debounce(() => renderPhotos(photos), RERENDER_DELAY));
+    setRandomFilter(
+      photos,
+      debounce((filteredPhotos) => renderPhotos(filteredPhotos), RERENDER_DELAY),
+    );
+    setDiscussedFilter(
+      photos,
+      debounce((filteredPhotos) => renderPhotos(filteredPhotos), RERENDER_DELAY),
+    );
+  } catch (_error) {
+    hideFilters();
+    showFetchPhotosErrorAlert();
+    photosContainer.removeEventListener('keydown', photoPreviewKeyDownHandler);
+    photosContainer.removeEventListener('click', photoPreviewClickHandler);
   }
-};
 
-const photoPreviewClickHandler = (event) => {
-  if (event.target.matches('.picture img')) {
-    openPhotoPreview(event, event.target);
+  const openPhotoPreview = (event, element) => {
+    event.preventDefault();
+
+    const currentPhoto = photos.find((photo) => photo.id === Number(element.dataset.photoId));
+    renderBigPhoto(currentPhoto);
+  };
+
+  function photoPreviewKeyDownHandler(event) {
+    if (event.target.closest('.picture') && isEnterKey(event)) {
+      openPhotoPreview(event, event.target.children[0]);
+    }
   }
+
+  function photoPreviewClickHandler(event) {
+    if (event.target.matches('.picture img')) {
+      openPhotoPreview(event, event.target);
+    }
+  }
+
+  photosContainer.addEventListener('keydown', photoPreviewKeyDownHandler);
+  photosContainer.addEventListener('click', photoPreviewClickHandler);
 };
 
-photosContainer.addEventListener('keydown', photoPreviewKeyDownHandler);
-
-photosContainer.addEventListener('click', photoPreviewClickHandler);
+export { renderGallery };
