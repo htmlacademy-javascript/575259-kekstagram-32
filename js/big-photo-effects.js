@@ -1,12 +1,12 @@
 const DEFAULT_EFFECT_VALUE = 100;
 
-const EFFECTS = {
-  chrome: 'effect-chrome',
-  sepia: 'effect-sepia',
-  marvin: 'effect-marvin',
-  phobos: 'effect-phobos',
-  heat: 'effect-heat',
-  none: 'effect-none',
+const Effects = {
+  CHROME: 'effect-chrome',
+  SEPIA: 'effect-sepia',
+  MARVIN: 'effect-marvin',
+  PHOBOS: 'effect-phobos',
+  HEAT: 'effect-heat',
+  NONE: 'effect-none',
 };
 
 const DEFAULT_SLIDER_OPTIONS = {
@@ -46,21 +46,21 @@ const HEAT_FILTER_SLIDER_OPTIONS = {
 };
 
 const FILTER_SLIDER_OPTIONS_MAPPING = {
-  [EFFECTS.chrome]: DEFAULT_SLIDER_OPTIONS,
-  [EFFECTS.sepia]: DEFAULT_SLIDER_OPTIONS,
-  [EFFECTS.marvin]: MARVIN_FILTER_SLIDER_OPTIONS,
-  [EFFECTS.phobos]: PHOBOS_FILTER_SLIDER_OPTIONS,
-  [EFFECTS.heat]: HEAT_FILTER_SLIDER_OPTIONS,
-  [EFFECTS.none]: DEFAULT_SLIDER_OPTIONS,
+  [Effects.CHROME]: DEFAULT_SLIDER_OPTIONS,
+  [Effects.SEPIA]: DEFAULT_SLIDER_OPTIONS,
+  [Effects.MARVIN]: MARVIN_FILTER_SLIDER_OPTIONS,
+  [Effects.PHOBOS]: PHOBOS_FILTER_SLIDER_OPTIONS,
+  [Effects.HEAT]: HEAT_FILTER_SLIDER_OPTIONS,
+  [Effects.NONE]: DEFAULT_SLIDER_OPTIONS,
 };
 
 const FILTER_MAPPING = {
-  [EFFECTS.chrome]: (value) => `grayscale(${value})`,
-  [EFFECTS.sepia]: (value) => `sepia(${value})`,
-  [EFFECTS.marvin]: (value) => `invert(${value}%)`,
-  [EFFECTS.phobos]: (value) => `blur(${value}px)`,
-  [EFFECTS.heat]: (value) => `brightness(${value})`,
-  [EFFECTS.none]: () => 'none',
+  [Effects.CHROME]: (value) => `grayscale(${value})`,
+  [Effects.SEPIA]: (value) => `sepia(${value})`,
+  [Effects.MARVIN]: (value) => `invert(${value}%)`,
+  [Effects.PHOBOS]: (value) => `blur(${value}px)`,
+  [Effects.HEAT]: (value) => `brightness(${value})`,
+  [Effects.NONE]: () => 'none',
 };
 
 const effectsList = document.querySelector('.effects__list');
@@ -68,6 +68,7 @@ const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
 const sliderContainer = document.querySelector('.img-upload__effect-level');
 const imgPreview = document.querySelector('.img-upload__preview img');
+
 
 effectLevelValue.value = DEFAULT_EFFECT_VALUE;
 
@@ -108,7 +109,7 @@ const resetFilters = () => {
   sliderContainer.classList.add('hidden');
   effectLevelSlider.classList.add('hidden');
   imgPreview.style.filter = 'none';
-  effectLevelSlider.noUiSlider.updateOptions(FILTER_SLIDER_OPTIONS_MAPPING[EFFECTS.none]);
+  effectLevelSlider.noUiSlider.updateOptions(FILTER_SLIDER_OPTIONS_MAPPING[Effects.NONE]);
 };
 
 resetFilters();
@@ -119,7 +120,7 @@ effectsList.addEventListener('change', (event) => {
 
     const value = effectLevelValue.value;
 
-    if (effectId === EFFECTS.none) {
+    if (effectId === Effects.NONE) {
       resetFilters();
       return;
     }

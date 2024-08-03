@@ -1,12 +1,12 @@
 const ALERT_SHOW_TIME = 5000;
 
-const KEY_CODE = {
+const KeyCode = {
   ESCAPE: 'Escape',
   ENTER: 'Enter',
 };
 
-const isEscapeKey = (event) => event.key === KEY_CODE.ESCAPE;
-const isEnterKey = (event) => event.key === KEY_CODE.ENTER;
+const isEscapeKey = (event) => event.key === KeyCode.ESCAPE;
+const isEnterKey = (event) => event.key === KeyCode.ENTER;
 
 const createTemplateElementByID = (id) => {
   const templateContent = document.querySelector(`#${id}`).content;

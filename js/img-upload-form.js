@@ -13,7 +13,7 @@ import {
 } from './validation-utils.js';
 import { createPhoto } from './api.js';
 import { resetFilters } from './big-photo-effects.js';
-import { resetScale } from './big-photo-scale.js';
+import { resetScale, setScale } from './big-photo-scale.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
@@ -61,6 +61,7 @@ const imgUploadOverlayClose = () => {
 const imgUploadOverlayOpen = () => {
   imgUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  setScale();
 
   imgUploadForm.addEventListener('submit', imgUploadFormSubmitHandler);
 
