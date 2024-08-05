@@ -27,8 +27,8 @@ const renderGallery = async () => {
   } catch (_error) {
     hideFilters();
     showFetchPhotosErrorAlert();
-    photosContainer.removeEventListener('keydown', photoPreviewKeyDownHandler);
-    photosContainer.removeEventListener('click', photoPreviewClickHandler);
+    photosContainer.removeEventListener('keydown', photosContainerKeydownHandler);
+    photosContainer.removeEventListener('click', photosContainerClickHandler);
   }
 
   const openPhotoPreview = (event, element) => {
@@ -38,20 +38,20 @@ const renderGallery = async () => {
     renderBigPhoto(currentPhoto);
   };
 
-  function photoPreviewKeyDownHandler(event) {
+  function photosContainerKeydownHandler(event) {
     if (event.target.closest('.picture') && isEnterKey(event)) {
       openPhotoPreview(event, event.target.children[0]);
     }
   }
 
-  function photoPreviewClickHandler(event) {
+  function photosContainerClickHandler(event) {
     if (event.target.matches('.picture img')) {
       openPhotoPreview(event, event.target);
     }
   }
 
-  photosContainer.addEventListener('keydown', photoPreviewKeyDownHandler);
-  photosContainer.addEventListener('click', photoPreviewClickHandler);
+  photosContainer.addEventListener('keydown', photosContainerKeydownHandler);
+  photosContainer.addEventListener('click', photosContainerClickHandler);
 };
 
 export { renderGallery };

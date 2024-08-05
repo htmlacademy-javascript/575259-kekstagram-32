@@ -12,7 +12,7 @@ import {
   validateByRules,
 } from './validation-utils.js';
 import { createPhoto } from './api.js';
-import { resetFilters } from './big-photo-effects.js';
+import { resetFilters, closeFilters } from './big-photo-effects.js';
 import { resetScale, setScale } from './big-photo-scale.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
@@ -34,11 +34,11 @@ const pristine = new Pristine(imgUploadForm, {
 });
 
 const addKeyDownUploadOverlayEvent = () => {
-  document.addEventListener('keydown', imageUploadOverlayKeydownHandler);
+  document.addEventListener('keydown', documentKeydownHandler);
 };
 
 const removeKeyDownUploadOverlayEvent = () => {
-  document.removeEventListener('keydown', imageUploadOverlayKeydownHandler);
+  document.removeEventListener('keydown', documentKeydownHandler);
 };
 
 const imgUploadOverlayClose = () => {
@@ -50,11 +50,12 @@ const imgUploadOverlayClose = () => {
   resetFilters();
   resetScale();
   pristine.reset();
+  closeFilters();
 
-  imgUploadCancelButton.removeEventListener('click', imgUploadOverlayCloseHandler);
+  imgUploadCancelButton.removeEventListener('click', imgUploadCancelButtonClickHandler);
   removeKeyDownUploadOverlayEvent();
-  hashTagInput.removeEventListener('keydown', inputKeydownHandler);
-  commentInput.removeEventListener('keydown', inputKeydownHandler);
+  hashTagInput.removeEventListener('keydown', hashTaginputKeydownHandler);
+  commentInput.removeEventListener('keydown', commentInputKeydownHandler);
   imgUploadForm.removeEventListener('submit', imgUploadFormSubmitHandler);
 };
 
@@ -65,7 +66,7 @@ const imgUploadOverlayOpen = () => {
 
   imgUploadForm.addEventListener('submit', imgUploadFormSubmitHandler);
 
-  imgUploadCancelButton.addEventListener('click', imgUploadOverlayCloseHandler);
+  imgUploadCancelButton.addEventListener('click', imgUploadCancelButtonClickHandler);
   addKeyDownUploadOverlayEvent();
 };
 
@@ -86,18 +87,18 @@ const setImgPreview = () => {
   }
 };
 
-const imgUploadOverlayOpenHandler = () => {
+const imgUploadInputChangeHandler = () => {
   imgUploadOverlayOpen();
   setImgPreview();
 };
 
-imgUploadInput.addEventListener('change', imgUploadOverlayOpenHandler);
+imgUploadInput.addEventListener('change', imgUploadInputChangeHandler);
 
-function imgUploadOverlayCloseHandler() {
+function imgUploadCancelButtonClickHandler() {
   imgUploadOverlayClose();
 }
 
-function imageUploadOverlayKeydownHandler(event) {
+function documentKeydownHandler(event) {
   if (isEscapeKey(event)) {
     event.preventDefault();
 
@@ -150,16 +151,22 @@ const validateHashtag = (value) => {
 
 pristine.addValidator(hashTagInput, validateHashtag, getValidationHashtagsErrorMessage);
 
-function inputKeydownHandler(event) {
+function hashTaginputKeydownHandler(event) {
   if (event.target.focus) {
     event.stopPropagation();
   }
 }
 
-hashTagInput.addEventListener('keydown', inputKeydownHandler);
+function commentInputKeydownHandler(event) {
+  if (event.target.focus) {
+    event.stopPropagation();
+  }
+}
+
+hashTagInput.addEventListener('keydown', hashTaginputKeydownHandler);
 
 const validateComment = (value) => isCommentLengthCorrect(value);
 
 pristine.addValidator(commentInput, validateComment, getValidationCommentErrorMessage);
 
-commentInput.addEventListener('keydown', inputKeydownHandler);
+commentInput.addEventListener('keydown', commentInputKeydownHandler);

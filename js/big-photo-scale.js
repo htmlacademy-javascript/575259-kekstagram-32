@@ -7,7 +7,7 @@ const scaleBiggerButton = document.querySelector('.scale__control--bigger');
 const scaleInput = document.querySelector('.scale__control--value');
 const imgPreview = document.querySelector('.img-upload__preview img');
 
-const imgPreviewScaleDownHandler = () => {
+const scaleSmallerButtonClickHandler = () => {
   const currentScale = parseInt(scaleInput.value, 10);
   const newScale = currentScale - SCALE_STEP;
 
@@ -18,7 +18,7 @@ const imgPreviewScaleDownHandler = () => {
   imgPreview.style.transform = `scale(${newScale / 100})`;
 };
 
-const imgPreviewScaleUpHandler = () => {
+const scaleBiggerButtonClickHandler = () => {
   const currentScale = parseInt(scaleInput.value, 10);
   const newScale = currentScale + SCALE_STEP;
 
@@ -34,13 +34,13 @@ const resetScale = () => {
   imgPreview.style.transform = 'scale(1)';
   scaleInput.value = '100%';
 
-  scaleSmallerButton.removeEventListener('click', imgPreviewScaleDownHandler);
-  scaleBiggerButton.removeEventListener('click', imgPreviewScaleUpHandler);
+  scaleSmallerButton.removeEventListener('click', scaleSmallerButtonClickHandler);
+  scaleBiggerButton.removeEventListener('click', scaleBiggerButtonClickHandler);
 };
 
 const setScale = () => {
-  scaleSmallerButton.addEventListener('click', imgPreviewScaleDownHandler);
-  scaleBiggerButton.addEventListener('click', imgPreviewScaleUpHandler);
+  scaleSmallerButton.addEventListener('click', scaleSmallerButtonClickHandler);
+  scaleBiggerButton.addEventListener('click', scaleBiggerButtonClickHandler);
 };
 
 export { resetScale, setScale };

@@ -114,7 +114,7 @@ const resetFilters = () => {
 
 resetFilters();
 
-effectsList.addEventListener('change', (event) => {
+function effectsListChangeHandler(event) {
   if (event.target.closest('.effects__radio')) {
     const effectId = event.target.id;
 
@@ -129,6 +129,13 @@ effectsList.addEventListener('change', (event) => {
     imgPreview.style.filter = FILTER_MAPPING[effectId](value);
     effectLevelSlider.noUiSlider.updateOptions(FILTER_SLIDER_OPTIONS_MAPPING[effectId]);
   }
-});
+}
 
-export { resetFilters };
+effectsList.addEventListener('change', effectsListChangeHandler);
+
+const closeFilters = () => {
+  effectsList.removeEventListener('change', effectsListChangeHandler);
+  effectLevelSlider.noUiSlider.destroy();
+};
+
+export { resetFilters, closeFilters };

@@ -17,7 +17,7 @@ const filterRandom = document.querySelector('#filter-random');
 const filterDiscussed = document.querySelector('#filter-discussed');
 
 const setDefaultFilter = (callback) => {
-  const filterClickHandler = () => {
+  const filterDefaultClickHandler = () => {
     filterDiscussed.classList.remove('img-filters__button--active');
     filterRandom.classList.remove('img-filters__button--active');
     filterDefault.classList.add('img-filters__button--active');
@@ -25,11 +25,11 @@ const setDefaultFilter = (callback) => {
     callback();
   };
 
-  filterDefault.addEventListener('click', filterClickHandler);
+  filterDefault.addEventListener('click', filterDefaultClickHandler);
 };
 
 const setRandomFilter = (photos, callback) => {
-  const clickFilterHandler = () => {
+  const filterRandomClickHandler = () => {
     filterDiscussed.classList.remove('img-filters__button--active');
     filterDefault.classList.remove('img-filters__button--active');
     filterRandom.classList.add('img-filters__button--active');
@@ -45,11 +45,11 @@ const setRandomFilter = (photos, callback) => {
     callback(filteredPhotos);
   };
 
-  filterRandom.addEventListener('click', clickFilterHandler);
+  filterRandom.addEventListener('click', filterRandomClickHandler);
 };
 
 const setDiscussedFilter = (photos, callback) => {
-  const clickFilterHandler = () => {
+  const filterDiscussedClickHandler = () => {
     const filteredPhotos = [...photos].sort((photo1, photo2) => photo2.comments.length - photo1.comments.length);
 
     filterRandom.classList.remove('img-filters__button--active');
@@ -59,7 +59,13 @@ const setDiscussedFilter = (photos, callback) => {
     callback(filteredPhotos);
   };
 
-  filterDiscussed.addEventListener('click', clickFilterHandler);
+  filterDiscussed.addEventListener('click', filterDiscussedClickHandler);
 };
 
-export { setDiscussedFilter, setDefaultFilter, setRandomFilter, showFilters,hideFilters };
+export {
+  setDiscussedFilter,
+  setDefaultFilter,
+  setRandomFilter,
+  showFilters,
+  hideFilters
+};

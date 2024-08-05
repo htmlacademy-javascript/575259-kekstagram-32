@@ -40,19 +40,19 @@ const showCreatePhotoErrorAlert = (addKeyDownUploadOverlayEvent, removeKeyDownUp
 
   const closeSuccessAlert = () => {
     errorElement.remove();
-    document.removeEventListener('keydown', escapeKeyHandler);
-    errorElement.removeEventListener('click', outsideClickHandler);
+    document.removeEventListener('keydown', documentKeydownHandler);
+    errorElement.removeEventListener('click', errorElementClickHandler);
     errorButton.removeEventListener('click', errorButtonClickHandler);
     addKeyDownUploadOverlayEvent();
   };
 
-  function outsideClickHandler(event) {
+  function errorElementClickHandler(event) {
     if (!errorInnerElement.contains(event.target)) {
       closeSuccessAlert();
     }
   }
 
-  function escapeKeyHandler(event) {
+  function documentKeydownHandler(event) {
     if (isEscapeKey(event)) {
       event.preventDefault();
       closeSuccessAlert();
@@ -63,8 +63,8 @@ const showCreatePhotoErrorAlert = (addKeyDownUploadOverlayEvent, removeKeyDownUp
     closeSuccessAlert();
   }
 
-  errorElement.addEventListener('click', outsideClickHandler);
-  document.addEventListener('keydown', escapeKeyHandler);
+  errorElement.addEventListener('click', errorElementClickHandler);
+  document.addEventListener('keydown', documentKeydownHandler);
   errorButton.addEventListener('click', errorButtonClickHandler);
 };
 
@@ -79,18 +79,18 @@ const showCreatePhotoSuccessAlert = () => {
 
   const closeSuccessAlert = () => {
     successElement.remove();
-    document.removeEventListener('keydown', escapeKeyHandler);
-    successElement.removeEventListener('click', outsideClickHandler);
+    document.removeEventListener('keydown', documentKeydownHandler);
+    successElement.removeEventListener('click', successElementClickHandler);
   };
 
-  function escapeKeyHandler(event) {
+  function documentKeydownHandler(event) {
     if (isEscapeKey(event)) {
       event.preventDefault();
       closeSuccessAlert();
     }
   }
 
-  function outsideClickHandler(event) {
+  function successElementClickHandler(event) {
     if (!successInnerElement.contains(event.target)) {
       closeSuccessAlert();
     }
@@ -100,16 +100,16 @@ const showCreatePhotoSuccessAlert = () => {
     closeSuccessAlert();
   };
 
-  document.addEventListener('keydown', escapeKeyHandler);
-  successElement.addEventListener('click', outsideClickHandler);
+  document.addEventListener('keydown', documentKeydownHandler);
+  successElement.addEventListener('click', successElementClickHandler);
 
   const successButton = successElement.querySelector('.success__button');
   successButton.addEventListener('click', successButtonClickHandler);
 };
 
-const getRandomInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
+const getRandomInteger = (min, max) => {
+  const lower = Math.ceil(Math.min(min, max));
+  const upper = Math.floor(Math.max(min, max));
   const result = Math.random() * (upper - lower + 1) + lower;
 
   return Math.floor(result);
