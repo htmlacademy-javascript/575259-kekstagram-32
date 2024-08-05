@@ -18,11 +18,11 @@ let currentComments = [];
 let currentCommentsCount = COMMENTS_COUNT_STEP;
 
 
-const bigPhotoCloseHandler = () => {
+const bigPhotoCloseButtonClickHandler = () => {
   bigPhotoClose();
 };
 
-const bigPhotoKeydownHandler = (event) => {
+const documentKeydownHandler = (event) => {
   if (isEscapeKey(event)) {
     event.preventDefault();
 
@@ -38,8 +38,8 @@ const bigPhotoOpen = () => {
     commentsLoadMore.classList.remove('hidden');
   }
 
-  document.addEventListener('keydown', bigPhotoKeydownHandler);
-  bigPhotoCloseButton.addEventListener('click', bigPhotoCloseHandler);
+  document.addEventListener('keydown', documentKeydownHandler);
+  bigPhotoCloseButton.addEventListener('click', bigPhotoCloseButtonClickHandler);
 };
 
 function bigPhotoClose() {
@@ -48,9 +48,9 @@ function bigPhotoClose() {
 
   bigPhoto.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', bigPhotoKeydownHandler);
-  bigPhotoCloseButton.removeEventListener('click', bigPhotoCloseHandler);
-  commentsLoadMore.removeEventListener('click', commentsLoadMoreHandler);
+  document.removeEventListener('keydown', documentKeydownHandler);
+  bigPhotoCloseButton.removeEventListener('click', bigPhotoCloseButtonClickHandler);
+  commentsLoadMore.removeEventListener('click', commentsLoadMoreClickHandler);
 }
 
 const renderCommentsBlock = (comments) => {
@@ -80,7 +80,7 @@ const renderCommentsBlock = (comments) => {
   commentsContainer.append(commentsFragment);
 };
 
-function commentsLoadMoreHandler() {
+function commentsLoadMoreClickHandler() {
   currentCommentsCount += COMMENTS_COUNT_STEP;
   showedComments.textContent = currentCommentsCount;
   renderCommentsBlock(currentComments.slice(0, currentCommentsCount));
@@ -109,7 +109,7 @@ const renderBigPhoto = (photo) => {
     commentsLoadMore.classList.add('hidden');
   }
 
-  commentsLoadMore.addEventListener('click', commentsLoadMoreHandler);
+  commentsLoadMore.addEventListener('click', commentsLoadMoreClickHandler);
 };
 
 export { renderBigPhoto };
